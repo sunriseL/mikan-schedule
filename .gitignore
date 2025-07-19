@@ -67,13 +67,6 @@ ENV/
 env.bak/
 venv.bak/
 
-# 爬虫生成的临时文件
-scraped_images/
-*.jpg
-*.png
-*.gif
-scraping_report.json
-
 # 测试生成的临时文件
 test_output/
 *.test.js

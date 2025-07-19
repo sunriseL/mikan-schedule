@@ -40,7 +40,7 @@ const I18N = {
         // 活动详情
         venue: "会场",
         undetermined: "未定",
-        openTime: "开演",
+        openTime: "开场",
         startTime: "开演",
         endTime: "终演",
         date: "日期",
@@ -78,7 +78,7 @@ const I18N = {
     
     ja: {
         // 页面标题和头部
-        siteTitle: "小日向美香 活動スケジュール",
+        siteTitle: "小日向美香 イベントスケジュール",
         siteDescription: "声優、アイドル、アーティストのイベント・ライブ情報",
         loadingText: "スケジュールを読み込み中...",
         errorTitle: "読み込みエラー",
@@ -116,7 +116,7 @@ const I18N = {
         // 活动详情
         venue: "会場",
         undetermined: "未定",
-        openTime: "開演",
+        openTime: "開場",
         startTime: "開演",
         endTime: "終演",
         date: "日付",

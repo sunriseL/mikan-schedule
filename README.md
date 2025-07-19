@@ -1,81 +1,81 @@
-# 小小日向美香的传声筒 - 日程表框架
+# Hinata Mika's Voice Relay - Schedule Framework
 
-一个现代化的活动日程管理Web应用，支持多语言、响应式设计和丰富的交互功能。
+A modern web application for activity schedule management with multi-language support, responsive design, and rich interactive features.
 
-## 🚀 功能特性
+## 🚀 Features
 
-- 📅 **智能日程管理** - 支持按日期、类型、优先级等多种方式组织活动
-- 🌍 **多语言支持** - 支持中文、英文、日文等多种语言切换
-- 📱 **响应式设计** - 完美适配桌面端和移动端
-- 🎨 **现代化UI** - 美观的界面设计和流畅的动画效果
-- 🔍 **高级筛选** - 支持按类型、日期范围、标签等多维度筛选
-- 📊 **数据可视化** - 直观的日历视图和统计信息
-- 🔧 **易于扩展** - 模块化架构，便于添加新功能
+- 📅 **Smart Schedule Management** - Support for organizing activities by date, type, priority, and more
+- 🌍 **Multi-language Support** - Support for Chinese, English, Japanese, and other language switching
+- 📱 **Responsive Design** - Perfect adaptation for desktop and mobile devices
+- 🎨 **Modern UI** - Beautiful interface design and smooth animation effects
+- 🔍 **Advanced Filtering** - Support for filtering by type, date range, tags, and multiple dimensions
+- 📊 **Data Visualization** - Intuitive calendar view and statistical information
+- 🔧 **Easy to Extend** - Modular architecture for easy addition of new features
 
-## 📁 项目结构
+## 📁 Project Structure
 
 ```
 Schedule/
-├── index.html              # 主页面
-├── src/                    # 源代码目录
-│   ├── js/                 # JavaScript文件
-│   │   ├── app.js          # 主应用逻辑
-│   │   ├── components.js   # UI组件
-│   │   ├── config.js       # 配置文件
-│   │   ├── i18n.js         # 国际化
-│   │   ├── import_events.js # 数据导入
-│   │   ├── script.js       # 工具脚本
-│   │   └── data-loader.js  # 数据加载器
-│   └── css/                # 样式文件
-│       └── styles.css      # 主样式表
-├── assets/                 # 静态资源
-│   ├── images/             # 图片资源
-│   └── data/               # 数据文件
-│       ├── activities.json # 活动数据
-│       ├── config_events.json # 配置数据
-│       └── raw_events.json # 原始数据
-├── scripts/                # 脚本工具
-│   ├── scrape_eventernote.py # 数据爬取脚本
-│   ├── run_scraper.py      # 爬虫运行脚本
-│   └── test_scraper.py     # 爬虫测试
-├── tests/                  # 测试文件
-│   └── *.html              # 各种测试页面
-└── docs/                   # 文档
-    ├── README.md           # 项目说明
-    ├── requirements.txt    # Python依赖
-    └── *.md               # 其他文档
+├── index.html              # Main page
+├── src/                    # Source code directory
+│   ├── js/                 # JavaScript files
+│   │   ├── app.js          # Main application logic
+│   │   ├── components.js   # UI components
+│   │   ├── config.js       # Configuration files
+│   │   ├── i18n.js         # Internationalization
+│   │   ├── import_events.js # Data import
+│   │   ├── script.js       # Utility scripts
+│   │   └── data-loader.js  # Data loader
+│   └── css/                # Style files
+│       └── styles.css      # Main stylesheet
+├── assets/                 # Static resources
+│   ├── images/             # Image resources
+│   └── data/               # Data files
+│       ├── activities.json # Activity data
+│       ├── config_events.json # Configuration data
+│       └── raw_events.json # Raw data
+├── scripts/                # Script tools
+│   ├── scrape_eventernote.py # Data scraping script
+│   ├── run_scraper.py      # Scraper execution script
+│   └── test_scraper.py     # Scraper testing
+├── tests/                  # Test files
+│   └── *.html              # Various test pages
+└── docs/                   # Documentation
+    ├── README.md           # Project description
+    ├── requirements.txt    # Python dependencies
+    └── *.md               # Other documentation
 ```
 
-## 🛠️ 快速开始
+## 🛠️ Quick Start
 
-### 1. 克隆项目
+### 1. Clone the project
 ```bash
 git clone <repository-url>
 cd Schedule
 ```
 
-### 2. 启动应用
-由于这是一个纯前端项目，你可以：
+### 2. Start the application
+Since this is a pure frontend project, you can:
 
-**方法一：直接打开**
-- 双击 `index.html` 文件在浏览器中打开
+**Method 1: Direct opening**
+- Double-click the `index.html` file to open in browser
 
-**方法二：使用本地服务器**
+**Method 2: Use local server**
 ```bash
-# 使用Python
+# Using Python
 python -m http.server 8000
 
-# 使用Node.js
+# Using Node.js
 npx serve .
 
-# 使用PHP
+# Using PHP
 php -S localhost:8000
 ```
 
-然后在浏览器中访问 `http://localhost:8000`
+Then visit `http://localhost:8000` in your browser
 
-### 3. 数据更新（可选）
-如果需要更新活动数据：
+### 3. Data update (optional)
+If you need to update activity data:
 
 ```bash
 cd scripts
@@ -83,69 +83,69 @@ pip install -r ../docs/requirements.txt
 python run_scraper.py
 ```
 
-## 🎯 核心功能
+## 🎯 Core Features
 
-### 日程管理
-- 添加、编辑、删除活动
-- 按日期、类型、优先级排序
-- 支持重复活动设置
+### Schedule Management
+- Add, edit, delete activities
+- Sort by date, type, priority
+- Support for recurring activity settings
 
-### 多语言支持
-- 中文（简体/繁体）
-- 英文
-- 日文
-- 支持动态切换语言
+### Multi-language Support
+- Chinese (Simplified/Traditional)
+- English
+- Japanese
+- Support for dynamic language switching
 
-### 高级筛选
-- 按活动类型筛选
-- 按日期范围筛选
-- 按标签筛选
-- 按优先级筛选
+### Advanced Filtering
+- Filter by activity type
+- Filter by date range
+- Filter by tags
+- Filter by priority
 
-### 数据导入导出
-- 支持JSON格式数据导入
-- 支持CSV格式导出
-- 支持批量数据更新
+### Data Import/Export
+- Support for JSON format data import
+- Support for CSV format export
+- Support for batch data updates
 
-## 🔧 技术栈
+## 🔧 Technology Stack
 
-- **前端**: HTML5, CSS3, JavaScript (ES6+)
-- **样式**: 自定义CSS，响应式设计
-- **数据**: JSON格式
-- **工具**: Python爬虫脚本
+- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
+- **Styling**: Custom CSS, responsive design
+- **Data**: JSON format
+- **Tools**: Python scraping scripts
 
-## 📝 开发指南
+## 📝 Development Guide
 
-### 添加新功能
-1. 在 `src/js/` 目录下创建新的JavaScript文件
-2. 在 `index.html` 中引入新文件
-3. 在 `src/css/styles.css` 中添加相应样式
+### Adding New Features
+1. Create new JavaScript files in the `src/js/` directory
+2. Include new files in `index.html`
+3. Add corresponding styles in `src/css/styles.css`
 
-### 添加新语言
-1. 在 `src/js/i18n.js` 中添加新的语言配置
-2. 更新语言切换逻辑
+### Adding New Languages
+1. Add new language configuration in `src/js/i18n.js`
+2. Update language switching logic
 
-### 自定义样式
-1. 修改 `src/css/styles.css` 文件
-2. 支持CSS变量自定义主题色彩
+### Customizing Styles
+1. Modify the `src/css/styles.css` file
+2. Support CSS variables for custom theme colors
 
-## 🤝 贡献指南
+## 🤝 Contributing
 
-1. Fork 项目
-2. 创建功能分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 打开 Pull Request
+1. Fork the project
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## 📄 许可证
+## 📄 License
 
-本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
-## 🙏 致谢
+## 🙏 Acknowledgments
 
-- 感谢所有为这个项目做出贡献的开发者
-- 特别感谢小日向美香粉丝团的支持
+- Thanks to all developers who contributed to this project
+- Special thanks to Hinata Mika fan club for their support
 
 ---
 
-**注意**: 这是一个开源项目，仅供学习和研究使用。请遵守相关法律法规和网站使用条款。 
+**Note**: This is an open-source project for learning and research purposes only. Please comply with relevant laws and regulations and website terms of use. 
