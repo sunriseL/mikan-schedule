@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>多语言功能测试</title>
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #FFF8DC;
+            color: #8B4513;
+        }
+        .test-section {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(139, 69, 19, 0.1);
+        }
+        .language-switcher {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .language-btn {
+            background: transparent;
+            border: 1px solid #FFD700;
+            color: #8B4513;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+        .language-btn.active {
+            background: #FFD700;
+        }
+        .test-item {
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>多语言功能测试</h1>
+    
+    <div class="language-switcher">
+        <span>语言切换: </span>
+        <button class="language-btn active" onclick="switchLanguage('zh')">中文</button>
+        <button class="language-btn" onclick="switchLanguage('ja')">日本語</button>
+    </div>
+    
+    <div class="test-section">
+        <h2 id="test-title">测试标题</h2>
+        <div class="test-item">
+            <strong>页面标题:</strong> <span id="site-title"></span>
+        </div>
+        <div class="test-item">
+            <strong>加载文本:</strong> <span id="loading-text"></span>
+        </div>
+        <div class="test-item">
+            <strong>筛选活动:</strong> <span id="filter-title"></span>
+        </div>
+        <div class="test-item">
+            <strong>会场:</strong> <span id="venue"></span>
+        </div>
+        <div class="test-item">
+            <strong>未定:</strong> <span id="undetermined"></span>
+        </div>
+        <div class="test-item">
+            <strong>星期一:</strong> <span id="monday"></span>
+        </div>
+        <div class="test-item">
+            <strong>6月:</strong> <span id="june"></span>
+        </div>
+        <div class="test-item">
+            <strong>活动统计:</strong> <span id="stats-title"></span>
+        </div>
+        <div class="test-item">
+            <strong>总活动数:</strong> <span id="total-events"></span>
+        </div>
+        <div class="test-item">
+            <strong>即将到来的活动:</strong> <span id="upcoming-events"></span>
+        </div>
+        <div class="test-item">
+            <strong>pr: 截止发圈前:</strong> <span id="pr-note"></span>
+        </div>
+        <div class="test-item">
+            <strong>按日期排序:</strong> <span id="sort-by-date"></span>
+        </div>
+        <div class="test-item">
+            <strong>清除筛选:</strong> <span id="clear-filters"></span>
+        </div>
+    </div>
+
+    <script src="i18n.js"></script>
+    <script>
+        function updateTestContent() {
+            document.getElementById('site-title').textContent = languageManager.t('siteTitle');
+            document.getElementById('loading-text').textContent = languageManager.t('loadingText');
+            document.getElementById('filter-title').textContent = languageManager.t('filterTitle');
+            document.getElementById('venue').textContent = languageManager.t('venue');
+            document.getElementById('undetermined').textContent = languageManager.t('undetermined');
+            document.getElementById('monday').textContent = languageManager.t('weekdays.Mon.');
+            document.getElementById('june').textContent = languageManager.t('months.6');
+            document.getElementById('stats-title').textContent = languageManager.t('statsTitle');
+            document.getElementById('total-events').textContent = languageManager.t('totalEvents');
+            document.getElementById('upcoming-events').textContent = languageManager.t('upcomingEvents');
+            document.getElementById('pr-note').textContent = languageManager.t('prNote');
+            document.getElementById('sort-by-date').textContent = languageManager.t('sortByDate');
+            document.getElementById('clear-filters').textContent = languageManager.t('clearFilters');
+        }
+        
+        function switchLanguage(lang) {
+            languageManager.setLanguage(lang);
+            
+            // 更新按钮状态
+            document.querySelectorAll('.language-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // 更新测试内容
+            updateTestContent();
+        }
+        
+        // 监听语言变化
+        languageManager.addListener((newLanguage) => {
+            updateTestContent();
+        });
+        
+        // 初始化
+        updateTestContent();
+    </script>
+</body>
+</html> 

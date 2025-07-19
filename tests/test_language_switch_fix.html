@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>语言切换事件重复绑定修复测试</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .test-info {
+            background: #f0f8ff;
+            border: 2px solid #4CAF50;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px;
+            font-family: Arial, sans-serif;
+        }
+        
+        .test-info h2 {
+            color: #2E7D32;
+            margin-top: 0;
+        }
+        
+        .test-steps {
+            background: #fff3e0;
+            border-left: 4px solid #FF9800;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .test-steps ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        
+        .test-steps li {
+            margin: 8px 0;
+            line-height: 1.5;
+        }
+        
+        .warning {
+            background: #ffebee;
+            border: 2px solid #f44336;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            color: #c62828;
+        }
+        
+        .success {
+            background: #e8f5e8;
+            border: 2px solid #4caf50;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            color: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-info">
+        <h2>🔧 语言切换事件重复绑定修复测试</h2>
+        
+        <div class="test-steps">
+            <h3>测试步骤：</h3>
+            <ol>
+                <li><strong>初始状态测试：</strong>页面加载后，点击任意活动卡片，应该只弹出一个模态框</li>
+                <li><strong>语言切换测试：</strong>点击语言切换按钮（中文 ↔ 日文），切换语言</li>
+                <li><strong>重复点击测试：</strong>切换语言后，再次点击活动卡片，应该仍然只弹出一个模态框</li>
+                <li><strong>多次切换测试：</strong>重复切换语言多次，然后点击活动卡片，确保没有重复弹出</li>
+                <li><strong>日历视图测试：</strong>切换到日历视图，重复上述测试步骤</li>
+            </ol>
+        </div>
+        
+        <div class="warning">
+            <strong>⚠️ 问题现象：</strong>
+            <ul>
+                <li>切换语言后点击活动卡片会弹出多个模态框</li>
+                <li>需要点击多次关闭按钮才能关闭所有模态框</li>
+                <li>事件监听器被重复绑定</li>
+            </ul>
+        </div>
+        
+        <div class="success">
+            <strong>✅ 修复内容：</strong>
+            <ul>
+                <li>在 CalendarViewComponent 构造函数中初始化 hoverEventsBound 属性</li>
+                <li>移除 onLanguageChange 方法中的重复 bindEvents() 调用</li>
+                <li>简化 bindHoverEvents 方法，避免重复绑定悬停事件</li>
+                <li>使用CSS :has() 选择器替代JavaScript悬停事件</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="app"></div>
+
+    <script src="config.js"></script>
+    <script src="i18n.js"></script>
+    <script src="components.js"></script>
+    <script src="app.js"></script>
+    <script>
+        // 初始化应用
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                // 创建应用实例
+                const app = new ScheduleApp(document.getElementById('app'));
+                
+                // 添加测试日志
+                console.log('🚀 应用初始化完成');
+                console.log('📝 开始语言切换事件重复绑定测试');
+                
+                // 监听语言变化
+                languageManager.addListener((newLanguage) => {
+                    console.log(`🌐 语言已切换到: ${newLanguage}`);
+                });
+                
+            } catch (error) {
+                console.error('❌ 应用初始化失败:', error);
+                document.getElementById('app').innerHTML = `
+                    <div class="error-message">
+                        <h2>初始化失败</h2>
+                        <p>${error.message}</p>
+                        <button onclick="location.reload()">重新加载</button>
+                    </div>
+                `;
+            }
+        });
+        
+        // 添加全局错误处理
+        window.addEventListener('error', (event) => {
+            console.error('❌ 全局错误:', event.error);
+        });
+        
+        // 添加未处理的Promise拒绝处理
+        window.addEventListener('unhandledrejection', (event) => {
+            console.error('❌ 未处理的Promise拒绝:', event.reason);
+        });
+    </script>
+</body>
+</html> 

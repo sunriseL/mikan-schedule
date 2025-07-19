@@ -1,0 +1,324 @@
+{
+  "events": [
+    {
+      "id": 1,
+      "day": "Fri.",
+      "dateRange": "6.15-19",
+      "title": "明日の卒業生たち",
+      "type": "theater",
+      "image": "assets/images/randpic_小日向美香_2.jpg",
+      "description": "毕业季特别演出 - 小日向美香精彩表演",
+      "location": "大剧院",
+              "time": "18:30",
+        "openTime": "17:45",
+        "endTime": "20:00",
+      "category": "performance",
+      "priority": 2,
+      "tags": ["毕业季", "演出", "特别活动"]
+    },
+    {
+      "id": 2,
+      "day": "Sun.",
+      "dateRange": "6.22",
+      "title": "超時空機",
+      "type": "anime",
+      "image": "assets/images/randpic_小日向美香_9.jpg",
+      "description": "科幻主题展览 - 穿越时空的奇妙体验",
+      "location": "科技馆",
+              "time": "14:00",
+        "openTime": "13:30",
+        "endTime": "16:00",
+      "category": "exhibition",
+      "priority": 1,
+      "tags": ["科幻", "展览", "互动"]
+    },
+    {
+      "id": 3,
+      "day": "Mon.",
+      "dateRange": "6.25",
+      "title": "夏日音乐会",
+      "type": "concert",
+      "image": "assets/images/randpic_小日向美香_16.jpg",
+      "description": "夏日户外音乐会，享受美妙的音乐时光",
+      "location": "中央公园",
+      "time": "18:30",
+      "category": "performance",
+      "priority": 1,
+      "tags": ["音乐", "户外", "夏日"]
+    },
+    {
+      "id": 4,
+      "day": "Wed.",
+      "dateRange": "6.27",
+      "title": "动漫角色扮演大赛",
+      "type": "cosplay",
+      "image": "assets/images/randpic_小日向美香_2.jpg",
+      "description": "展示你的角色扮演技巧，赢取丰厚奖品",
+      "location": "动漫中心",
+      "time": "15:00",
+      "category": "exhibition",
+      "priority": 1,
+      "tags": ["角色扮演", "比赛", "动漫"]
+    },
+    {
+      "id": 5,
+      "day": "Sat.",
+      "dateRange": "6.30",
+      "title": "团队建设活动",
+      "type": "meeting",
+      "image": "assets/images/randpic_小日向美香_9.jpg",
+      "description": "增进团队凝聚力，共同完成挑战任务",
+      "location": "户外拓展基地",
+      "time": "09:00",
+      "category": "meeting",
+      "priority": 1,
+      "tags": ["团队建设", "户外", "挑战"]
+    },
+    {
+      "id": 6,
+      "day": "Tue.",
+      "dateRange": "7.2",
+      "title": "夏日美食节",
+      "type": "food",
+      "image": "assets/images/randpic_小日向美香_16.jpg",
+      "description": "品尝各种夏日美食，体验不同文化的美食魅力",
+      "location": "美食广场",
+      "time": "12:00",
+      "category": "exhibition",
+      "priority": 1,
+      "tags": ["美食", "文化", "夏日"]
+    },
+    {
+      "id": 7,
+      "day": "Thu.",
+      "dateRange": "7.5",
+      "title": "摄影工作坊",
+      "type": "workshop",
+      "image": "assets/images/randpic_小日向美香_2.jpg",
+      "description": "学习摄影技巧，捕捉生活中的美好瞬间",
+      "location": "摄影工作室",
+      "time": "14:30",
+      "category": "meeting",
+      "priority": 1,
+      "tags": ["摄影", "学习", "技巧"]
+    },
+    {
+      "id": 8,
+      "day": "Sun.",
+      "dateRange": "7.8",
+      "title": "夏日电影节",
+      "type": "movie",
+      "image": "assets/images/randpic_小日向美香_9.jpg",
+      "description": "观看经典夏日电影，享受清凉的观影体验",
+      "location": "露天影院",
+      "time": "20:00",
+      "category": "performance",
+      "priority": 1,
+      "tags": ["电影", "夏日", "露天"]
+    },
+    {
+      "id": 9,
+      "day": "Wed.",
+      "dateRange": "7.11",
+      "title": "手工艺术展",
+      "type": "art",
+      "image": "assets/images/randpic_小日向美香_16.jpg",
+      "description": "展示精美的手工艺术作品，体验创作的乐趣",
+      "location": "艺术中心",
+      "time": "10:00",
+      "category": "exhibition",
+      "priority": 1,
+      "tags": ["手工", "艺术", "创作"]
+    },
+    {
+      "id": 10,
+      "day": "Sat.",
+      "dateRange": "7.14",
+      "title": "夏日瑜伽课程",
+      "type": "fitness",
+      "image": "assets/images/randpic_小日向美香_2.jpg",
+      "description": "在夏日阳光下练习瑜伽，保持身心健康",
+      "location": "瑜伽馆",
+      "time": "07:00",
+      "category": "meeting",
+      "priority": 1,
+      "tags": ["瑜伽", "健康", "运动"]
+    },
+    {
+      "id": 11,
+      "day": "Mon.",
+      "dateRange": "7.16",
+      "title": "科技创客大赛",
+      "type": "technology",
+      "image": "assets/images/randpic_小日向美香_9.jpg",
+      "description": "展示创新科技项目，激发创造力和想象力",
+      "location": "科技园区",
+      "time": "13:00",
+      "category": "exhibition",
+      "priority": 2,
+      "tags": ["科技", "创新", "比赛"]
+    },
+    {
+      "id": 12,
+      "day": "Thu.",
+      "dateRange": "7.19",
+      "title": "夏日读书会",
+      "type": "reading",
+      "image": "assets/images/randpic_小日向美香_16.jpg",
+      "description": "分享好书，交流阅读心得，享受阅读的乐趣",
+      "location": "图书馆",
+      "time": "15:30",
+      "category": "meeting",
+      "priority": 1,
+      "tags": ["阅读", "分享", "学习"]
+    },
+    {
+      "id": 13,
+      "day": "Sun.",
+      "dateRange": "7.22",
+      "title": "夏日花艺展",
+      "type": "flower",
+      "image": "assets/images/randpic_小日向美香_2.jpg",
+      "description": "欣赏精美的花艺作品，学习插花技巧",
+      "location": "花艺工作室",
+      "time": "11:00",
+      "category": "exhibition",
+      "priority": 1,
+      "tags": ["花艺", "插花", "艺术"]
+    },
+    {
+      "id": 14,
+      "day": "Wed.",
+      "dateRange": "7.25",
+      "title": "夏日夜跑活动",
+      "type": "sports",
+      "image": "assets/images/randpic_小日向美香_9.jpg",
+      "description": "在凉爽的夜晚进行跑步，享受运动的快乐",
+      "location": "城市公园",
+      "time": "19:30",
+      "category": "meeting",
+      "priority": 1,
+      "tags": ["夜跑", "运动", "健康"]
+    },
+    {
+      "id": 15,
+      "day": "Sat.",
+      "dateRange": "7.28",
+      "title": "夏日音乐节",
+      "type": "concert",
+      "image": "assets/images/randpic_小日向美香_16.jpg",
+      "description": "大型户外音乐节，多位知名音乐人倾情演出",
+      "location": "音乐广场",
+      "time": "18:00",
+      "category": "performance",
+      "priority": 3,
+      "tags": ["音乐节", "户外", "大型活动"]
+    },
+    {
+      "id": 16,
+      "day": "Sat.",
+      "dateRange": "7.28",
+      "title": "夏日音乐节",
+      "type": "concert",
+      "image": "assets/images/randpic_小日向美香_16.jpg",
+      "description": "大型户外音乐节，多位知名音乐人倾情演出",
+      "location": "音乐广场",
+      "time": "18:00",
+      "category": "performance",
+      "priority": 3,
+      "tags": ["音乐节", "户外", "大型活动"]
+    }
+  ],
+  "featuredPerson": {
+    "name": "小日向美香",
+    "image": "assets/images/randpic_小日向美香_16.jpg",
+    "book": "明日の卒業生たち",
+    "description": "可爱的日程表主角，负责展示各种精彩活动"
+  },
+  "categories": [
+    {
+      "id": "performance",
+      "name": "演出活动",
+      "color": "#FF6B6B",
+      "icon": "🎭"
+    },
+    {
+      "id": "exhibition",
+      "name": "展览活动",
+      "color": "#4ECDC4",
+      "icon": "🎨"
+    },
+    {
+      "id": "meeting",
+      "name": "会议活动",
+      "color": "#FFA500",
+      "icon": "📅"
+    },
+    {
+      "id": "concert",
+      "name": "音乐会",
+      "color": "#9B59B6",
+      "icon": "🎵"
+    },
+    {
+      "id": "cosplay",
+      "name": "角色扮演",
+      "color": "#E74C3C",
+      "icon": "🎭"
+    },
+    {
+      "id": "food",
+      "name": "美食活动",
+      "color": "#F39C12",
+      "icon": "🍔"
+    },
+    {
+      "id": "workshop",
+      "name": "工作坊",
+      "color": "#3498DB",
+      "icon": "🔧"
+    },
+    {
+      "id": "movie",
+      "name": "电影活动",
+      "color": "#8E44AD",
+      "icon": "🎬"
+    },
+    {
+      "id": "art",
+      "name": "艺术活动",
+      "color": "#E67E22",
+      "icon": "🎨"
+    },
+    {
+      "id": "fitness",
+      "name": "健身活动",
+      "color": "#27AE60",
+      "icon": "💪"
+    },
+    {
+      "id": "technology",
+      "name": "科技活动",
+      "color": "#34495E",
+      "icon": "💻"
+    },
+    {
+      "id": "reading",
+      "name": "阅读活动",
+      "color": "#95A5A6",
+      "icon": "📚"
+    },
+    {
+      "id": "flower",
+      "name": "花艺活动",
+      "color": "#E91E63",
+      "icon": "🌸"
+    },
+    {
+      "id": "sports",
+      "name": "体育活动",
+      "color": "#00BCD4",
+      "icon": "⚽"
+    }
+  ]
+} 

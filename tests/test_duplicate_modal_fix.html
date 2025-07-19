@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>重复模态框修复测试</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .test-container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .test-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+        }
+        
+        .test-title {
+            color: #8B4513;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .test-event-card {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(139, 69, 19, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+        }
+        
+        .test-event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(139, 69, 19, 0.2);
+        }
+        
+        .test-calendar-card {
+            background: white;
+            border-radius: 8px;
+            padding: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        
+        .console-output {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+            margin-top: 15px;
+        }
+        
+        .clear-btn {
+            background: #FFD700;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 15px;
+            color: #8B4513;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 5px;
+        }
+        
+        .clear-btn:hover {
+            background: #FFA500;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>重复模态框修复测试</h1>
+        
+        <div class="test-section">
+            <div class="test-title">测试列表视图活动卡片（包含图片）</div>
+            <div class="test-event-card event-section" data-event-id="test1">
+                <div class="event-info-header">
+                    <div class="event-date-title">
+                        <div class="event-date">2025-08-02 (土)</div>
+                        <div class="event-title">测试活动标题</div>
+                    </div>
+                    <div class="event-details">
+                        <div class="event-venue">会場: テスト会場</div>
+                        <div class="event-time">開演17:30 開演18:30 終演20:00</div>
+                    </div>
+                </div>
+                <div class="event-content">
+                    <div class="event-image">
+                        <img src="image/randpic_小日向美香_16.jpg" alt="活动图片" class="group-photo">
+                    </div>
+                </div>
+            </div>
+            <p style="font-size: 12px; color: #666;">点击上面的活动卡片（包括图片）应该只显示一个活动详情模态框</p>
+        </div>
+        
+        <div class="test-section">
+            <div class="test-title">测试日历视图活动卡片（包含图片）</div>
+            <div class="test-calendar-card calendar-event-card" data-event-id="test2">
+                <div class="event-info-header">
+                    <div class="event-date-title">
+                        <div class="event-title">日历视图测试活动</div>
+                    </div>
+                </div>
+                <div class="event-content">
+                    <div class="event-image">
+                        <img src="image/randpic_小日向美香_16.jpg" alt="活动图片" class="group-photo">
+                    </div>
+                </div>
+            </div>
+            <p style="font-size: 12px; color: #666;">点击上面的日历活动卡片（包括图片）应该只显示一个活动详情模态框</p>
+        </div>
+        
+        <div class="test-section">
+            <div class="test-title">测试独立图片</div>
+            <img src="image/randpic_小日向美香_16.jpg" alt="独立图片" style="width: 200px; height: auto; border-radius: 10px; cursor: pointer;">
+            <p style="font-size: 12px; color: #666;">点击上面的独立图片应该显示图片模态框</p>
+        </div>
+        
+        <div class="test-section">
+            <div class="test-title">控制台输出</div>
+            <button class="clear-btn" onclick="clearConsole()">清空控制台</button>
+            <div class="console-output" id="console-output">
+                <div>控制台输出将显示在这里...</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="i18n.js"></script>
+    <script src="config.js"></script>
+    <script src="components.js"></script>
+    <script src="app.js"></script>
+    
+    <script>
+        // 重写console.log来捕获输出
+        const originalLog = console.log;
+        const originalWarn = console.warn;
+        const originalError = console.error;
+        
+        function logToConsole(message, type = 'log') {
+            const console = document.getElementById('console-output');
+            const timestamp = new Date().toLocaleTimeString();
+            const color = type === 'error' ? '#ff0000' : type === 'warn' ? '#ff8800' : '#000000';
+            console.innerHTML += `<div style="color: ${color};">[${timestamp}] ${message}</div>`;
+            console.scrollTop = console.scrollHeight;
+        }
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            logToConsole(args.join(' '), 'log');
+        };
+        
+        console.warn = function(...args) {
+            originalWarn.apply(console, args);
+            logToConsole(args.join(' '), 'warn');
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            logToConsole(args.join(' '), 'error');
+        };
+        
+        // 创建测试数据
+        const testEvents = [
+            {
+                id: 'test1',
+                title: 'テスト活動タイトル',
+                dateRange: '8.02',
+                day: 'Sat.',
+                year: 2025,
+                location: 'テスト会場',
+                openTime: '17:30',
+                time: '18:30',
+                endTime: '20:00',
+                description: 'これはテスト活動の説明です',
+                image: 'image/randpic_小日向美香_16.jpg',
+                category: 'other',
+                tags: ['テスト']
+            },
+            {
+                id: 'test2',
+                title: 'カレンダー表示テスト活動',
+                dateRange: '8.02',
+                day: 'Sat.',
+                year: 2025,
+                location: 'カレンダー会場',
+                openTime: '17:30',
+                time: '18:30',
+                endTime: '20:30',
+                description: 'カレンダー表示のテスト活動です',
+                image: 'image/randpic_小日向美香_16.jpg',
+                category: 'performance',
+                tags: ['カレンダー', 'テスト']
+            }
+        ];
+        
+        // 创建测试应用实例
+        let testApp = null;
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // 创建测试数据管理器
+            const testDataManager = {
+                getEvents: () => testEvents,
+                getCategories: () => [
+                    { id: 'other', name: '其他活动', icon: '🏠' },
+                    { id: 'performance', name: '演出', icon: '🎭' }
+                ]
+            };
+            
+            // 创建测试应用
+            testApp = {
+                dataManager: testDataManager,
+                showEventDetails: function(eventSection) {
+                    const eventId = eventSection.dataset.eventId;
+                    const event = testEvents.find(e => e.id === eventId);
+                    
+                    console.log('显示活动详情:', eventId, event);
+                    
+                    if (!event) {
+                        console.warn('未找到活动:', eventId);
+                        return;
+                    }
+                    
+                    // 格式化完整日期（包含年份）
+                    const formattedDate = this.formatFullDate(event.dateRange, event.year);
+                    
+                    // 格式化时间信息
+                    const timeInfo = this.formatTimeInfo(event);
+                    
+                    // 构建活动图片HTML
+                    const imageHtml = event.image ? `
+                        <div class="event-modal-image">
+                            <img src="${event.image}" alt="${event.title}" class="modal-event-image">
+                        </div>
+                    ` : '';
+                    
+                    const content = `
+                        ${imageHtml}
+                        <div class="event-modal-details">
+                            <div class="event-detail-item">
+                                <span class="detail-icon">📅</span>
+                                <span class="detail-label">${languageManager.t('date')}:</span>
+                                <span class="detail-value">${formattedDate}</span>
+                            </div>
+                            <div class="event-detail-item">
+                                <span class="detail-icon">🕐</span>
+                                <span class="detail-label">${languageManager.t('time')}:</span>
+                                <span class="detail-value">${timeInfo}</span>
+                            </div>
+                            <div class="event-detail-item">
+                                <span class="detail-icon">📍</span>
+                                <span class="detail-label">${languageManager.t('venue')}:</span>
+                                <span class="detail-value">${event.location || languageManager.t('undetermined')}</span>
+                            </div>
+                            ${event.description ? `
+                            <div class="event-detail-item">
+                                <span class="detail-icon">📝</span>
+                                <span class="detail-label">${languageManager.t('description')}:</span>
+                                <span class="detail-value">${event.description}</span>
+                            </div>
+                            ` : ''}
+                            ${event.tags && event.tags.length > 0 ? `
+                            <div class="event-detail-item">
+                                <span class="detail-icon">🏷️</span>
+                                <span class="detail-label">${languageManager.t('tags')}:</span>
+                                <div class="event-tags-modal">
+                                    ${event.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                                </div>
+                            </div>
+                            ` : ''}
+                        </div>
+                    `;
+                    
+                    const modal = new ModalComponent(content, event.title);
+                    modal.mount(document.body);
+                },
+                
+                // 格式化完整日期
+                formatFullDate: function(dateRange, year) {
+                    const match = dateRange.match(/^(\d+)\.(\d+)/);
+                    if (match) {
+                        const month = match[1].padStart(2, '0');
+                        const day = match[2].padStart(2, '0');
+                        const eventYear = year || new Date().getFullYear();
+                        return `${eventYear}-${month}-${day}`;
+                    }
+                    return dateRange;
+                },
+                
+                // 格式化时间信息
+                formatTimeInfo: function(event) {
+                    const parts = [];
+                    
+                    if (event.openTime) {
+                        parts.push(`${languageManager.t('openTime')} ${event.openTime}`);
+                    }
+                    if (event.time) {
+                        parts.push(`${languageManager.t('startTime')} ${event.time}`);
+                    }
+                    if (event.endTime) {
+                        parts.push(`${languageManager.t('endTime')} ${event.endTime}`);
+                    }
+                    
+                    if (parts.length === 0) {
+                        return languageManager.t('undetermined');
+                    }
+                    
+                    return parts.join(' ');
+                },
+                
+                // 显示图片模态框
+                showImageModal: function(src, alt) {
+                    const content = `<img src="${src}" alt="${alt}" style="width: 100%; height: auto; border-radius: 10px;">`;
+                    const modal = new ModalComponent(content);
+                    modal.mount(document.body);
+                }
+            };
+            
+            // 绑定事件
+            document.addEventListener('click', (e) => {
+                const eventSection = e.target.closest('.event-section');
+                const calendarEventCard = e.target.closest('.calendar-event-card');
+                
+                // 检查是否点击的是活动卡片内的图片
+                const isImageInEventCard = e.target.closest('img') && 
+                    (eventSection || calendarEventCard);
+                
+                // 防止重复触发
+                if (e.defaultPrevented) return;
+                
+                if (eventSection) {
+                    console.log('点击列表视图活动卡片:', eventSection.dataset.eventId);
+                    testApp.showEventDetails(eventSection);
+                } else if (calendarEventCard) {
+                    console.log('点击日历视图活动卡片:', calendarEventCard.dataset.eventId);
+                    testApp.showEventDetails(calendarEventCard);
+                } else if (!isImageInEventCard) {
+                    // 只有在不是活动卡片内的图片时才显示图片模态框
+                    const image = e.target.closest('img');
+                    if (image) {
+                        console.log('点击独立图片:', image.src);
+                        e.stopPropagation();
+                        testApp.showImageModal(image.src, image.alt);
+                    }
+                }
+            });
+            
+            console.log('测试页面初始化完成');
+        });
+        
+        function clearConsole() {
+            document.getElementById('console-output').innerHTML = '<div>控制台已清空...</div>';
+        }
+    </script>
+</body>
+</html> 

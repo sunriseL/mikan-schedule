@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>语言管理器调试</title>
+    <style>
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #FFF8DC;
+            color: #8B4513;
+        }
+        .debug-section {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(139, 69, 19, 0.1);
+        }
+        .test-result {
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 5px;
+        }
+        .error {
+            background: rgba(255, 107, 107, 0.1);
+            color: #d32f2f;
+        }
+        .success {
+            background: rgba(76, 175, 80, 0.1);
+            color: #388e3c;
+        }
+    </style>
+</head>
+<body>
+    <h1>语言管理器调试</h1>
+    
+    <div class="debug-section">
+        <h2>当前语言: <span id="current-lang"></span></h2>
+        <button onclick="switchLanguage('zh')">切换到中文</button>
+        <button onclick="switchLanguage('ja')">切换到日本語</button>
+    </div>
+    
+    <div class="debug-section">
+        <h2>测试结果</h2>
+        <div id="test-results"></div>
+    </div>
+
+    <script src="i18n.js"></script>
+    <script>
+        function runTests() {
+            const results = [];
+            
+            // 测试简单键
+            results.push({
+                key: 'siteTitle',
+                expected: '简单文本',
+                actual: languageManager.t('siteTitle')
+            });
+            
+            // 测试嵌套键 - 星期
+            results.push({
+                key: 'weekdays.Sun.',
+                expected: '嵌套键（星期）',
+                actual: languageManager.t('weekdays.Sun.')
+            });
+            
+            // 测试嵌套键 - 月份
+            results.push({
+                key: 'months.6',
+                expected: '嵌套键（月份）',
+                actual: languageManager.t('months.6')
+            });
+            
+            // 测试不存在的键
+            results.push({
+                key: 'nonexistent.key',
+                expected: '返回原始键名',
+                actual: languageManager.t('nonexistent.key')
+            });
+            
+            // 显示结果
+            const container = document.getElementById('test-results');
+            container.innerHTML = '';
+            
+            results.forEach(result => {
+                const div = document.createElement('div');
+                div.className = `test-result ${result.actual === result.key ? 'error' : 'success'}`;
+                div.innerHTML = `
+                    <strong>${result.key}:</strong> ${result.actual}
+                    <br><small>期望: ${result.expected}</small>
+                `;
+                container.appendChild(div);
+            });
+        }
+        
+        function switchLanguage(lang) {
+            languageManager.setLanguage(lang);
+            document.getElementById('current-lang').textContent = lang;
+            runTests();
+        }
+        
+        // 初始化
+        document.getElementById('current-lang').textContent = languageManager.getCurrentLanguage();
+        runTests();
+        
+        // 监听语言变化
+        languageManager.addListener((newLanguage) => {
+            document.getElementById('current-lang').textContent = newLanguage;
+            runTests();
+        });
+    </script>
+</body>
+</html> 

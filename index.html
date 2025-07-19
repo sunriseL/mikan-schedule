@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小小日向美香的传声筒 - 日程表框架</title>
+    <link rel="stylesheet" href="src/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="app" class="container">
+        <!-- 应用将在这里动态渲染 -->
+        <div class="loading">
+            <div class="loading-spinner">⏳</div>
+            <p id="loading-text">正在加载日程表...</p>
+        </div>
+    </div>
+
+    <!-- 框架脚本 -->
+    <script src="src/js/i18n.js"></script>
+    <script src="src/js/config.js"></script>
+    <script src="src/js/components.js"></script>
+    <script src="src/js/app.js"></script>
+    
+    <!-- 应用初始化 -->
+    <script>
+        // 等待DOM加载完成
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                // 初始化应用
+                const appContainer = document.getElementById('app');
+                const scheduleApp = new ScheduleApp(appContainer);
+                
+                // 将应用实例暴露到全局，方便调试和扩展
+                window.scheduleApp = scheduleApp;
+                
+                // 示例：如何动态添加新活动
+                // scheduleApp.addEvent({
+                //     day: 'Mon.',
+                //     dateRange: '6.25',
+                //     title: '新活动',
+                //     type: 'meeting',
+                //     image: 'image/randpic_小日向美香_16.jpg',
+                //     description: '这是一个新添加的活动',
+                //     category: 'meeting',
+                //     priority: 1,
+                //     tags: ['新活动', '测试']
+                // });
+                
+                console.log('日程表框架初始化完成！');
+                console.log('使用 window.scheduleApp 访问应用实例');
+            } catch (error) {
+                console.error('应用初始化失败:', error);
+                const appContainer = document.getElementById('app');
+                appContainer.innerHTML = `
+                    <div class="error-message">
+                        <h2 id="error-title">加载失败</h2>
+                        <p id="error-message">无法加载活动数据，请检查网络连接或刷新页面重试。</p>
+                        <button onclick="location.reload()" id="refresh-button">刷新页面</button>
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+</html> 

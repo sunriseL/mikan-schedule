@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>排序修复测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-info {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .test-results {
+            background: #f3e5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .test-results h3 {
+            color: #7b1fa2;
+            margin-top: 0;
+        }
+        .sorting-examples {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 15px 0;
+        }
+        .sorting-section {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+        }
+        .sorting-section h4 {
+            color: #1976d2;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+        .event-item {
+            padding: 8px;
+            margin: 5px 0;
+            background: #f8f9fa;
+            border-radius: 4px;
+            border-left: 3px solid #007bff;
+        }
+        .event-date {
+            font-weight: bold;
+            color: #1976d2;
+        }
+        .event-title {
+            font-size: 0.9em;
+            margin-top: 2px;
+        }
+        button {
+            padding: 10px 20px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .console-output {
+            background: #000;
+            color: #0f0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+        .fix-summary {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ffc107;
+        }
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        .comparison-table th,
+        .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .comparison-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        .correct-order {
+            background-color: #d4edda;
+        }
+        .incorrect-order {
+            background-color: #f8d7da;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>排序修复测试</h1>
+        
+        <div class="fix-summary">
+            <h2>修复内容</h2>
+            <p><strong>问题：</strong>活动排序没有考虑年份，导致2025年的活动排在2024年活动之前</p>
+            <p><strong>原因：</strong>排序逻辑只使用 <code>dateRange</code>（如 "1.24"），没有考虑年份</p>
+            <p><strong>修复：</strong>改为使用 <code>fullDate</code>（如 "2024-01-28"）进行排序</p>
+        </div>
+
+        <div class="test-info">
+            <h2>测试目的</h2>
+            <p>验证修复后的排序功能，确保活动按正确的时间顺序排列：</p>
+            <ul>
+                <li>✅ 2024年的活动应该排在2025年活动之前</li>
+                <li>✅ 同一年内的活动应该按月份和日期排序</li>
+                <li>✅ 排序应该使用完整的日期信息（包含年份）</li>
+                <li>✅ 列表视图中的活动顺序应该正确</li>
+            </ul>
+        </div>
+
+        <div class="test-results">
+            <h3>排序对比</h3>
+            <div class="sorting-examples">
+                <div class="sorting-section">
+                    <h4>修复前（错误排序）</h4>
+                    <div id="before-sorting">
+                        <div class="event-item incorrect-order">
+                            <div class="event-date">2025-01-24 (金)</div>
+                            <div class="event-title">リスアニ! LIVE 2025 FRIDAY STAGE</div>
+                        </div>
+                        <div class="event-item incorrect-order">
+                            <div class="event-date">2024-01-28 (日)</div>
+                            <div class="event-title">リスアニ! LIVE 2024 SUNDAY STAGE</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="sorting-section">
+                    <h4>修复后（正确排序）</h4>
+                    <div id="after-sorting">
+                        <div class="event-item correct-order">
+                            <div class="event-date">2024-01-28 (日)</div>
+                            <div class="event-title">リスアニ! LIVE 2024 SUNDAY STAGE</div>
+                        </div>
+                        <div class="event-item correct-order">
+                            <div class="event-date">2025-01-24 (金)</div>
+                            <div class="event-title">リスアニ! LIVE 2025 FRIDAY STAGE</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button onclick="testSorting()">测试排序逻辑</button>
+            <button onclick="loadAndSortEvents()">加载并排序活动</button>
+            <button onclick="clearConsole()">清空控制台</button>
+            
+            <div class="console-output" id="console-output">
+                <div>控制台输出将显示在这里...</div>
+            </div>
+        </div>
+
+        <div class="test-results">
+            <h3>排序逻辑对比</h3>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>活动</th>
+                        <th>dateRange</th>
+                        <th>fullDate</th>
+                        <th>修复前排序值</th>
+                        <th>修复后排序值</th>
+                        <th>结果</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>リスアニ! LIVE 2024 SUNDAY STAGE</td>
+                        <td>1.28</td>
+                        <td>2024-01-28</td>
+                        <td>2024*10000 + 1*100 + 28 = 20240128</td>
+                        <td>new Date("2024-01-28")</td>
+                        <td class="correct-order">正确</td>
+                    </tr>
+                    <tr>
+                        <td>リスアニ! LIVE 2025 FRIDAY STAGE</td>
+                        <td>1.24</td>
+                        <td>2025-01-24</td>
+                        <td>2024*10000 + 1*100 + 24 = 20240124</td>
+                        <td>new Date("2025-01-24")</td>
+                        <td class="correct-order">正确</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script>
+        function log(message) {
+            const console = document.getElementById('console-output');
+            const timestamp = new Date().toLocaleTimeString();
+            console.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+            console.scrollTop = console.scrollHeight;
+        }
+
+        function clearConsole() {
+            document.getElementById('console-output').innerHTML = '<div>控制台已清空...</div>';
+        }
+
+        function testSorting() {
+            log('开始测试排序逻辑...');
+            
+            // 创建数据管理器
+            const dataManager = new ScheduleDataManager();
+            
+            // 创建测试活动
+            const testEvents = [
+                {
+                    id: 1,
+                    title: "リスアニ! LIVE 2025 FRIDAY STAGE",
+                    dateRange: "1.24",
+                    fullDate: "2025-01-24",
+                    year: 2025,
+                    month: 1,
+                    day: 24
+                },
+                {
+                    id: 2,
+                    title: "リスアニ! LIVE 2024 SUNDAY STAGE",
+                    dateRange: "1.28",
+                    fullDate: "2024-01-28",
+                    year: 2024,
+                    month: 1,
+                    day: 28
+                },
+                {
+                    id: 3,
+                    title: "2024年2月活动",
+                    dateRange: "2.1",
+                    fullDate: "2024-02-01",
+                    year: 2024,
+                    month: 2,
+                    day: 1
+                },
+                {
+                    id: 4,
+                    title: "2025年7月活动",
+                    dateRange: "7.30",
+                    fullDate: "2025-07-30",
+                    year: 2025,
+                    month: 7,
+                    day: 30
+                }
+            ];
+            
+            // 添加活动到数据管理器
+            testEvents.forEach(event => {
+                dataManager.addEvent(event);
+            });
+            
+            log(`测试活动数量: ${dataManager.events.length}`);
+            
+            // 显示排序结果
+            log('排序后的活动顺序:');
+            dataManager.events.forEach((event, index) => {
+                log(`${index + 1}. ${event.fullDate} - ${event.title}`);
+            });
+            
+            // 验证排序是否正确
+            const isCorrectlySorted = dataManager.events.every((event, index) => {
+                if (index === 0) return true;
+                const prevEvent = dataManager.events[index - 1];
+                return new Date(event.fullDate) >= new Date(prevEvent.fullDate);
+            });
+            
+            log(`排序是否正确: ${isCorrectlySorted ? '✅ 是' : '❌ 否'}`);
+        }
+
+        async function loadAndSortEvents() {
+            log('开始加载并排序真实活动数据...');
+            
+            try {
+                const response = await fetch('activities.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                log(`数据加载成功，总活动数: ${data.events.length}`);
+                
+                // 创建数据管理器
+                const dataManager = new ScheduleDataManager();
+                dataManager.loadFromJSON(data);
+                
+                log(`数据管理器中的活动数: ${dataManager.events.length}`);
+                
+                // 显示前10个活动的排序结果
+                log('排序后的前10个活动:');
+                dataManager.events.slice(0, 10).forEach((event, index) => {
+                    log(`${index + 1}. ${event.fullDate} - ${event.title}`);
+                });
+                
+                // 验证排序
+                const isCorrectlySorted = dataManager.events.every((event, index) => {
+                    if (index === 0) return true;
+                    const prevEvent = dataManager.events[index - 1];
+                    return new Date(event.fullDate) >= new Date(prevEvent.fullDate);
+                });
+                
+                log(`排序是否正确: ${isCorrectlySorted ? '✅ 是' : '❌ 否'}`);
+                
+                // 统计年份分布
+                const yearStats = {};
+                dataManager.events.forEach(event => {
+                    yearStats[event.year] = (yearStats[event.year] || 0) + 1;
+                });
+                
+                log('年份分布:');
+                Object.keys(yearStats).sort().forEach(year => {
+                    log(`  ${year}年: ${yearStats[year]}个活动`);
+                });
+                
+            } catch (error) {
+                log(`数据加载失败: ${error.message}`);
+            }
+        }
+
+        // 页面加载时自动测试
+        window.addEventListener('load', () => {
+            log('页面加载完成，准备测试排序修复...');
+        });
+    </script>
+</body>
+</html> 

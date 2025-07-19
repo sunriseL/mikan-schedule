@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>常驻日期范围选择功能测试</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .test-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .test-header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .test-header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        .test-section {
+            margin-bottom: 40px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .test-section h2 {
+            color: #333;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        .test-results {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .test-results h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .test-results pre {
+            background: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="test-header">
+            <h1>常驻日期范围选择功能测试</h1>
+            <p>测试列表视图中的常驻日期范围选择功能</p>
+        </div>
+        
+        <div class="test-section">
+            <h2>功能说明</h2>
+            <p>本次更新为列表视图添加了常驻日期范围选择功能，包括：</p>
+            <ul>
+                <li>两个常驻的起始日期和终止日期选择框</li>
+                <li>选择不同时间范围时，日期选择框自动更新对应的日期</li>
+                <li>本周：起始日期为今天，结束日期为7天后</li>
+                <li>来周：起始日期为7天后，结束日期为14天后</li>
+                <li>本月：起始日期为本月1号，结束日期为本月最后一天</li>
+                <li>来月：起始日期为下月1号，结束日期为下月最后一天</li>
+                <li>用户可以手动修改日期选择框中的日期</li>
+                <li>支持中日双语界面</li>
+                <li>响应式设计，支持移动端</li>
+            </ul>
+        </div>
+        
+        <div class="test-section">
+            <h2>测试区域</h2>
+            <div id="app"></div>
+        </div>
+        
+        <div class="test-section">
+            <h2>测试步骤</h2>
+            <ol>
+                <li>切换到列表视图</li>
+                <li>观察起始日期和终止日期选择框是否显示</li>
+                <li>选择"本周"，验证日期是否正确更新</li>
+                <li>选择"来周"，验证日期是否正确更新</li>
+                <li>选择"本月"，验证日期是否正确更新</li>
+                <li>选择"来月"，验证日期是否正确更新</li>
+                <li>手动修改日期选择框中的日期</li>
+                <li>验证筛选结果是否正确</li>
+                <li>测试"清除筛选"功能</li>
+            </ol>
+        </div>
+        
+        <div class="test-section">
+            <h2>预期结果</h2>
+            <div class="test-results">
+                <h3>功能验证</h3>
+                <ul>
+                    <li>✅ 起始日期和终止日期选择框常驻显示</li>
+                    <li>✅ 选择本周时，起始日期为今天，结束日期为7天后</li>
+                    <li>✅ 选择来周时，起始日期为7天后，结束日期为14天后</li>
+                    <li>✅ 选择本月时，起始日期为本月1号，结束日期为本月最后一天</li>
+                    <li>✅ 选择来月时，起始日期为下月1号，结束日期为下月最后一天</li>
+                    <li>✅ 手动修改日期时筛选结果正确更新</li>
+                    <li>✅ 清除筛选按钮重置所有条件</li>
+                    <li>✅ 筛选结果正确显示在指定日期范围内的活动</li>
+                    <li>✅ 活动计数正确更新</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入必要的脚本 -->
+    <script src="i18n.js"></script>
+    <script src="config.js"></script>
+    <script src="components.js"></script>
+    <script src="app.js"></script>
+    
+    <script>
+        // 初始化应用
+        document.addEventListener('DOMContentLoaded', function() {
+            // 创建测试数据
+            const testData = {
+                events: [
+                    {
+                        id: 'test1',
+                        title: '测试活动1',
+                        dateRange: '7.15',
+                        year: 2024,
+                        day: 'Mon.',
+                        category: 'live',
+                        venue: '测试会场1',
+                        openTime: '18:00',
+                        startTime: '19:00',
+                        endTime: '21:00'
+                    },
+                    {
+                        id: 'test2',
+                        title: '测试活动2',
+                        dateRange: '7.20',
+                        year: 2024,
+                        day: 'Sat.',
+                        category: 'event',
+                        venue: '测试会场2',
+                        openTime: '17:00',
+                        startTime: '18:00',
+                        endTime: '20:00'
+                    },
+                    {
+                        id: 'test3',
+                        title: '测试活动3',
+                        dateRange: '8.5',
+                        year: 2024,
+                        day: 'Mon.',
+                        category: 'live',
+                        venue: '测试会场3',
+                        openTime: '19:00',
+                        startTime: '20:00',
+                        endTime: '22:00'
+                    },
+                    {
+                        id: 'test4',
+                        title: '测试活动4',
+                        dateRange: '8.15',
+                        year: 2024,
+                        day: 'Thu.',
+                        category: 'event',
+                        venue: '测试会场4',
+                        openTime: '18:30',
+                        startTime: '19:30',
+                        endTime: '21:30'
+                    }
+                ],
+                categories: [
+                    { id: 'live', name: '演唱会', icon: '🎤' },
+                    { id: 'event', name: '活动', icon: '🎪' }
+                ],
+                featuredPerson: {
+                    name: '小日向美香',
+                    image: 'image/mikako.jpg',
+                    description: '声优、偶像、艺术家'
+                }
+            };
+            
+            // 初始化应用
+            const app = new ScheduleApp(document.getElementById('app'));
+            
+            // 加载测试数据
+            app.dataManager.loadFromJSON(testData);
+            
+            // 设置为列表视图
+            app.currentView = 'list';
+            app.currentFilters = { timeRange: 'thisWeek' };
+            
+            // 重新渲染
+            app.render();
+            
+            // 将应用实例保存到全局变量以便调试
+            window.testApp = app;
+            
+            console.log('测试应用已初始化');
+            console.log('测试数据:', testData);
+            console.log('应用实例:', app);
+        });
+    </script>
+</body>
+</html> 

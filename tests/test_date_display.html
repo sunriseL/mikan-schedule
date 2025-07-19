@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日期显示修复测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-info {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .test-results {
+            background: #f3e5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .test-results h3 {
+            color: #7b1fa2;
+            margin-top: 0;
+        }
+        .event-examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .event-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+        }
+        .event-date {
+            color: #1976d2;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .event-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .event-venue {
+            color: #666;
+            font-size: 0.9em;
+        }
+        button {
+            padding: 10px 20px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .console-output {
+            background: #000;
+            color: #0f0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+        .fix-summary {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>日期显示修复测试</h1>
+        
+        <div class="fix-summary">
+            <h2>修复内容</h2>
+            <p><strong>问题：</strong>在列表视图中，2024年的活动被错误地显示为2025年</p>
+            <p><strong>原因：</strong>在 <code>EventCardComponent.formatDate()</code> 方法中硬编码了2025年</p>
+            <p><strong>修复：</strong>改为使用活动数据中的实际年份</p>
+        </div>
+
+        <div class="test-info">
+            <h2>测试目的</h2>
+            <p>验证修复后的日期显示功能，确保活动显示正确的年份：</p>
+            <ul>
+                <li>✅ 2024年的活动应该显示2024年</li>
+                <li>✅ 2025年的活动应该显示2025年</li>
+                <li>✅ 日期格式应该正确（YYYY-MM-DD）</li>
+                <li>✅ 星期几显示应该正确</li>
+            </ul>
+        </div>
+
+        <div class="test-results">
+            <h3>活动示例</h3>
+            <div class="event-examples" id="event-examples">
+                <div class="event-card">
+                    <div class="event-date">加载中...</div>
+                    <div class="event-title">加载中...</div>
+                    <div class="event-venue">加载中...</div>
+                </div>
+            </div>
+            
+            <button onclick="loadEventExamples()">加载活动示例</button>
+            <button onclick="testDateFormatting()">测试日期格式化</button>
+            <button onclick="clearConsole()">清空控制台</button>
+            
+            <div class="console-output" id="console-output">
+                <div>控制台输出将显示在这里...</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script src="components.js"></script>
+    <script src="i18n.js"></script>
+    <script>
+        let dataManager = null;
+        let loadedData = null;
+
+        function log(message) {
+            const console = document.getElementById('console-output');
+            const timestamp = new Date().toLocaleTimeString();
+            console.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+            console.scrollTop = console.scrollHeight;
+        }
+
+        function clearConsole() {
+            document.getElementById('console-output').innerHTML = '<div>控制台已清空...</div>';
+        }
+
+        async function loadEventExamples() {
+            log('开始加载活动示例...');
+            
+            try {
+                const response = await fetch('activities.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                loadedData = await response.json();
+                log(`数据加载成功，总活动数: ${loadedData.events.length}`);
+                
+                // 创建数据管理器
+                dataManager = new ScheduleDataManager();
+                dataManager.loadFromJSON(loadedData);
+                
+                // 获取2024年和2025年的活动示例
+                const events2024 = dataManager.getEvents({ year: 2024 }).slice(0, 3);
+                const events2025 = dataManager.getEvents({ year: 2025 }).slice(0, 3);
+                
+                log(`找到2024年活动: ${events2024.length}个`);
+                log(`找到2025年活动: ${events2025.length}个`);
+                
+                // 显示活动示例
+                displayEventExamples([...events2024, ...events2025]);
+                
+            } catch (error) {
+                log(`数据加载失败: ${error.message}`);
+            }
+        }
+
+        function displayEventExamples(events) {
+            const container = document.getElementById('event-examples');
+            container.innerHTML = '';
+            
+            events.forEach(event => {
+                // 创建EventCardComponent来测试日期格式化
+                const eventCard = new EventCardComponent(event, { id: 'test', name: '测试分类', icon: '🎭' });
+                const eventElement = eventCard.render();
+                
+                // 提取日期信息
+                const dateElement = eventElement.querySelector('.event-date');
+                const titleElement = eventElement.querySelector('.event-title');
+                const venueElement = eventElement.querySelector('.event-venue');
+                
+                const eventCardDiv = document.createElement('div');
+                eventCardDiv.className = 'event-card';
+                eventCardDiv.innerHTML = `
+                    <div class="event-date">${dateElement ? dateElement.textContent : '日期未知'}</div>
+                    <div class="event-title">${titleElement ? titleElement.textContent : '标题未知'}</div>
+                    <div class="event-venue">${venueElement ? venueElement.textContent : '场地未知'}</div>
+                    <div style="font-size: 0.8em; color: #999; margin-top: 5px;">
+                        实际年份: ${event.year}, 日期范围: ${event.dateRange}
+                    </div>
+                `;
+                
+                container.appendChild(eventCardDiv);
+                
+                log(`活动: ${event.title} - 显示日期: ${dateElement ? dateElement.textContent : '未知'} - 实际年份: ${event.year}`);
+            });
+        }
+
+        function testDateFormatting() {
+            if (!dataManager) {
+                log('请先加载数据');
+                return;
+            }
+            
+            log('开始测试日期格式化...');
+            
+            // 测试一些特定的日期
+            const testEvents = [
+                { dateRange: '1.31', year: 2024, title: '2024年1月31日活动' },
+                { dateRange: '2.1', year: 2024, title: '2024年2月1日活动' },
+                { dateRange: '7.30', year: 2025, title: '2025年7月30日活动' },
+                { dateRange: '8.2', year: 2025, title: '2025年8月2日活动' }
+            ];
+            
+            testEvents.forEach(testEvent => {
+                const eventCard = new EventCardComponent(testEvent, { id: 'test', name: '测试分类', icon: '🎭' });
+                const formattedDate = eventCard.formatDate(testEvent.dateRange);
+                log(`测试: ${testEvent.title} - 输入: ${testEvent.dateRange} (${testEvent.year}年) - 输出: ${formattedDate}`);
+            });
+        }
+
+        // 页面加载时自动加载数据
+        window.addEventListener('load', () => {
+            log('页面加载完成，准备测试日期显示修复...');
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日历年份切换测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-info {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .test-info h2 {
+            color: #1976d2;
+            margin-top: 0;
+        }
+        .test-steps {
+            background: #f3e5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .test-steps h3 {
+            color: #7b1fa2;
+            margin-top: 0;
+        }
+        .test-steps ol {
+            margin: 10px 0;
+        }
+        .test-steps li {
+            margin: 5px 0;
+        }
+        .calendar-test {
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .calendar-test h3 {
+            color: #333;
+            margin-top: 0;
+        }
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>日历年份切换功能测试</h1>
+        
+        <div class="test-info">
+            <h2>修复内容</h2>
+            <p>已修复日历视图中硬编码2025年的问题，现在可以正确显示不同年份的活动：</p>
+            <ul>
+                <li>✅ 移除了数据管理器中的2025年硬编码过滤</li>
+                <li>✅ 修复了日历组件的年份处理逻辑</li>
+                <li>✅ 更新了活动导入工具，支持所有年份</li>
+                <li>✅ 修改了页面标题，移除硬编码的2025年</li>
+            </ul>
+        </div>
+
+        <div class="test-steps">
+            <h3>测试步骤</h3>
+            <ol>
+                <li>点击下方的"打开应用"按钮</li>
+                <li>在日历视图中，使用左右箭头按钮切换月份</li>
+                <li>当切换到2024年时，应该显示2024年的活动</li>
+                <li>当切换到2025年时，应该显示2025年的活动</li>
+                <li>验证不同年份的活动是否正确显示</li>
+            </ol>
+        </div>
+
+        <div class="calendar-test">
+            <h3>应用测试</h3>
+            <button onclick="openApp()" style="padding: 10px 20px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; margin-bottom: 10px;">
+                打开应用
+            </button>
+            <div id="app-frame" style="display: none;">
+                <iframe id="schedule-iframe" src="index.html"></iframe>
+            </div>
+        </div>
+
+        <div class="test-steps">
+            <h3>预期结果</h3>
+            <ul>
+                <li>✅ 2024年4月应该显示2024年的活动（如您提供的图片所示）</li>
+                <li>✅ 2025年的月份应该显示2025年的活动</li>
+                <li>✅ 年份切换应该正常工作</li>
+                <li>✅ 活动数据应该根据年份正确过滤</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function openApp() {
+            const frameContainer = document.getElementById('app-frame');
+            frameContainer.style.display = 'block';
+            
+            // 滚动到iframe
+            frameContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html> 

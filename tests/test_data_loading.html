@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据加载测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-info {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .test-results {
+            background: #f3e5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .test-results h3 {
+            color: #7b1fa2;
+            margin-top: 0;
+        }
+        .data-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #1976d2;
+        }
+        .stat-label {
+            color: #666;
+            margin-top: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .console-output {
+            background: #000;
+            color: #0f0;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>数据加载测试</h1>
+        
+        <div class="test-info">
+            <h2>测试目的</h2>
+            <p>验证修复后的数据加载功能，确保所有年份的活动都能正确加载：</p>
+            <ul>
+                <li>✅ 检查数据文件中的活动总数</li>
+                <li>✅ 验证2024年和2025年的活动数量</li>
+                <li>✅ 确认数据管理器是否正确加载所有活动</li>
+                <li>✅ 测试年份过滤功能</li>
+            </ul>
+        </div>
+
+        <div class="test-results">
+            <h3>数据统计</h3>
+            <div class="data-stats" id="data-stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="total-events">-</div>
+                    <div class="stat-label">总活动数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="events-2024">-</div>
+                    <div class="stat-label">2024年活动</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="events-2025">-</div>
+                    <div class="stat-label">2025年活动</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="loaded-events">-</div>
+                    <div class="stat-label">已加载活动</div>
+                </div>
+            </div>
+            
+            <button onclick="loadData()">加载数据</button>
+            <button onclick="testDataManager()">测试数据管理器</button>
+            <button onclick="clearConsole()">清空控制台</button>
+            
+            <div class="console-output" id="console-output">
+                <div>控制台输出将显示在这里...</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="config.js"></script>
+    <script>
+        let dataManager = null;
+        let loadedData = null;
+
+        function log(message) {
+            const console = document.getElementById('console-output');
+            const timestamp = new Date().toLocaleTimeString();
+            console.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+            console.scrollTop = console.scrollHeight;
+        }
+
+        function clearConsole() {
+            document.getElementById('console-output').innerHTML = '<div>控制台已清空...</div>';
+        }
+
+        async function loadData() {
+            log('开始加载数据...');
+            
+            try {
+                const response = await fetch('activities.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                loadedData = await response.json();
+                log(`数据加载成功，总活动数: ${loadedData.events.length}`);
+                
+                // 统计年份分布
+                const yearStats = {};
+                loadedData.events.forEach(event => {
+                    yearStats[event.year] = (yearStats[event.year] || 0) + 1;
+                });
+                
+                log('年份分布统计:');
+                Object.keys(yearStats).sort().forEach(year => {
+                    log(`  ${year}年: ${yearStats[year]}个活动`);
+                });
+                
+                // 更新显示
+                document.getElementById('total-events').textContent = loadedData.events.length;
+                document.getElementById('events-2024').textContent = yearStats[2024] || 0;
+                document.getElementById('events-2025').textContent = yearStats[2025] || 0;
+                
+            } catch (error) {
+                log(`数据加载失败: ${error.message}`);
+            }
+        }
+
+        async function testDataManager() {
+            if (!loadedData) {
+                log('请先加载数据');
+                return;
+            }
+            
+            log('开始测试数据管理器...');
+            
+            // 创建数据管理器实例
+            dataManager = new ScheduleDataManager();
+            
+            // 加载数据
+            dataManager.loadFromJSON(loadedData);
+            log(`数据管理器加载完成，活动数: ${dataManager.events.length}`);
+            
+            // 测试年份过滤
+            const events2024 = dataManager.getEvents({ year: 2024 });
+            const events2025 = dataManager.getEvents({ year: 2025 });
+            
+            log(`2024年活动过滤结果: ${events2024.length}个`);
+            log(`2025年活动过滤结果: ${events2025.length}个`);
+            
+            // 更新显示
+            document.getElementById('loaded-events').textContent = dataManager.events.length;
+            
+            // 显示一些示例活动
+            log('2024年活动示例:');
+            events2024.slice(0, 3).forEach(event => {
+                log(`  - ${event.dateRange}: ${event.title}`);
+            });
+            
+            log('2025年活动示例:');
+            events2025.slice(0, 3).forEach(event => {
+                log(`  - ${event.dateRange}: ${event.title}`);
+            });
+        }
+
+        // 页面加载时自动加载数据
+        window.addEventListener('load', () => {
+            log('页面加载完成，准备测试数据加载...');
+        });
+    </script>
+</body>
+</html> 
