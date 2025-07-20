@@ -5,6 +5,24 @@
     box-sizing: border-box;
 }
 
+/* 移动端全局样式 */
+@media (max-width: 768px) {
+    body {
+        overflow-x: hidden !important; /* 防止页面水平滚动 */
+        max-width: 100vw !important;
+    }
+    
+    .container {
+        overflow-x: hidden !important;
+        max-width: 100vw !important;
+    }
+    
+    .main-content {
+        overflow-x: hidden !important;
+        max-width: 100vw !important;
+    }
+}
+
 body {
     font-family: 'Noto Sans SC', sans-serif;
     background-color: #FFF8DC; /* 温暖的浅黄色背景 */
@@ -404,12 +422,63 @@ body {
     box-shadow: 0 4px 15px rgba(139, 69, 19, 0.1);
     backdrop-filter: blur(10px);
     width: 100%; /* 全宽显示 */
+    max-width: 100vw; /* 确保不超过视口宽度 */
+    overflow-x: hidden; /* 防止水平滚动 */
 }
 
 /* 日历视图时的主内容区域 */
 .main-content.calendar-view {
     grid-template-columns: 1fr; /* 单列布局 */
     gap: 20px;
+}
+
+/* 桌面版日历网格优化 */
+@media (min-width: 769px) {
+    .calendar-grid {
+        grid-template-columns: repeat(7, minmax(140px, 1fr)); /* 桌面版设置最小宽度 */
+    }
+    
+    .calendar-day {
+        min-width: 140px; /* 桌面版设置最小宽度 */
+    }
+    
+    /* PC端弹出窗口优化 */
+    .modal-content {
+        max-width: 600px !important; /* PC端固定最大宽度 */
+        width: 90% !important;
+        margin: 0 auto !important; /* PC端居中显示 */
+        padding: 30px !important;
+        border-radius: 15px !important;
+    }
+    
+    /* PC端弹出窗口内容优化 */
+    .event-detail-item {
+        flex-direction: row !important; /* 保持水平布局 */
+        gap: 10px !important;
+        padding: 10px !important;
+        align-items: flex-start !important;
+    }
+    
+    .detail-label {
+        min-width: 60px !important;
+        font-size: 16px !important;
+        flex-shrink: 0 !important;
+    }
+    
+    .detail-value {
+        font-size: 16px !important;
+        line-height: 1.4 !important;
+        flex: 1 !important;
+        word-wrap: break-word !important; /* PC端允许换行 */
+        white-space: normal !important;
+    }
+    
+    .modal-header h3 {
+        font-size: 20px !important;
+        line-height: 1.3 !important;
+        white-space: normal !important; /* PC端允许标题换行 */
+        overflow: visible !important;
+    }
 }
 
 .calendar-header {
@@ -445,7 +514,7 @@ body {
 
 .calendar-grid {
     display: grid;
-    grid-template-columns: repeat(7, minmax(140px, 1fr)); /* 设置最小宽度确保卡片内容完整显示 */
+    grid-template-columns: repeat(7, 1fr); /* 等宽分布，让移动端媒体查询控制最小宽度 */
     gap: 2px;
     background: #F5F5F5;
     border-radius: 10px;
@@ -453,6 +522,8 @@ body {
     min-height: 600px; /* 确保最小高度 */
     width: 100%;
     align-items: stretch; /* 确保同一行的单元格高度一致 */
+    max-width: 100vw; /* 确保不超过视口宽度 */
+    overflow-x: hidden; /* 防止水平滚动 */
 }
 
 .calendar-weekdays {
@@ -489,7 +560,7 @@ body {
     flex-direction: column;
     width: 100%; /* 确保占满整个格子宽度 */
     box-sizing: border-box; /* 包含边框和内边距 */
-    min-width: 140px; /* 确保最小宽度 */
+    min-width: 0; /* 移除最小宽度限制，允许收缩 */
     overflow: visible; /* 允许悬停的卡片溢出显示 */
 }
 
@@ -1048,12 +1119,13 @@ body {
     background: #FFF8DC;
     border-radius: 15px;
     padding: 30px;
-    max-width: 600px;
+    max-width: 600px; /* PC端固定最大宽度 */
     width: 90%;
     max-height: 80vh;
     overflow-y: auto;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     animation: slideIn 0.3s ease-out;
+    margin: 0 auto; /* PC端居中显示 */
 }
 
 .modal-header {
@@ -1409,18 +1481,32 @@ body {
         grid-template-columns: repeat(2, 1fr);
     }
     
+    /* 移动端日历容器优化 */
+    .calendar-container {
+        padding: 15px !important; /* 减小内边距 */
+        border-radius: 10px !important; /* 减小圆角 */
+        overflow-x: hidden !important; /* 防止水平滚动 */
+        max-width: 100vw !important; /* 确保不超过视口宽度 */
+    }
+    
     .calendar-grid {
-        grid-template-columns: repeat(7, minmax(80px, 1fr)); /* 移动端最小宽度 */
-        gap: 1px;
-        min-height: 400px; /* 移动端最小高度 */
-        width: 100%;
+        grid-template-columns: repeat(7, 1fr) !important; /* 移动端等宽分布，强制覆盖 */
+        gap: 1px !important;
+        min-height: 400px !important; /* 移动端最小高度 */
+        width: 100% !important;
+        max-width: 100vw !important; /* 确保不超过视口宽度 */
+        overflow-x: hidden !important; /* 防止水平滚动 */
+        min-width: 0 !important; /* 强制移除最小宽度 */
     }
     
     .calendar-day {
-        min-height: 80px;
-        height: auto; /* 移动端自适应高度 */
-        padding: 4px;
-        min-width: 80px; /* 移动端最小宽度 */
+        min-height: 80px !important;
+        height: auto !important; /* 移动端自适应高度 */
+        padding: 4px !important;
+        min-width: 0 !important; /* 强制移除最小宽度限制，允许收缩 */
+        width: 100% !important; /* 确保占满容器宽度 */
+        box-sizing: border-box !important;
+        max-width: none !important; /* 移除最大宽度限制 */
     }
     
     .calendar-event-card {
@@ -1438,6 +1524,11 @@ body {
     .calendar-event-card .event-venue,
     .calendar-event-card .event-time {
         font-size: 6px;
+    }
+    
+    /* 移动端隐藏截断指示器 */
+    .calendar-event-card.truncated::after {
+        display: none !important;
     }
     
     .filter-controls {
@@ -1476,11 +1567,56 @@ body {
     .list-filter-container .date-buttons {
         justify-content: center;
     }
+    
+    /* 移动端弹出窗口优化 */
+    .modal-content {
+        padding: 20px !important; /* 减小内边距 */
+        border-radius: 10px !important; /* 减小圆角 */
+        width: 90% !important; /* 增加与屏幕的间距 */
+        max-width: calc(100vw - 20px) !important; /* 增加边距 */
+        margin: 10px !important; /* 增加边距 */
+        overflow-x: hidden !important; /* 防止水平滚动 */
+    }
+    
+    /* 移动端弹出窗口内容优化 */
+    .event-detail-item {
+        flex-direction: row !important; /* 保持水平布局 */
+        gap: 10px !important;
+        padding: 8px !important;
+        align-items: center !important; /* 垂直居中对齐 */
+    }
+    
+    .detail-label {
+        min-width: 60px !important; /* 保持标签最小宽度 */
+        font-size: 14px !important;
+        flex-shrink: 0 !important; /* 防止标签收缩 */
+    }
+    
+    .detail-value {
+        font-size: 14px !important;
+        white-space: nowrap !important; /* 防止换行 */
+        overflow: hidden !important;
+        text-overflow: ellipsis !important; /* 超出显示省略号 */
+        flex: 1 !important;
+    }
+    
+    .modal-header h3 {
+        font-size: 18px !important; /* 减小标题字体 */
+        white-space: nowrap !important; /* 防止标题换行 */
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+    
+    .modal-event-image {
+        max-height: 200px; /* 减小图片最大高度 */
+    }
 }
 
 @media (max-width: 480px) {
     .container {
         padding: 10px;
+        max-width: 100vw; /* 移动端移除最大宽度限制 */
+        margin: 0; /* 移动端移除居中边距 */
     }
     
     .site-title {
@@ -1501,6 +1637,119 @@ body {
     
     .event-section {
         padding: 15px;
+    }
+    
+    /* 超小屏幕日历容器优化 */
+    .calendar-container {
+        padding: 10px !important; /* 进一步减小内边距 */
+        border-radius: 8px !important; /* 进一步减小圆角 */
+        overflow-x: hidden !important; /* 防止水平滚动 */
+        max-width: 100vw !important; /* 确保不超过视口宽度 */
+    }
+    
+    /* 超小屏幕的日历优化 */
+    .calendar-grid {
+        gap: 0.5px !important; /* 减小间距 */
+        min-height: 350px !important; /* 减小最小高度 */
+        grid-template-columns: repeat(7, 1fr) !important; /* 强制等宽分布 */
+        max-width: 100vw !important; /* 确保不超过视口宽度 */
+        overflow-x: hidden !important; /* 防止水平滚动 */
+    }
+    
+    .calendar-day {
+        min-height: 60px; /* 减小最小高度 */
+        padding: 2px; /* 减小内边距 */
+    }
+    
+    .calendar-event-card {
+        padding: 2px; /* 减小内边距 */
+        font-size: 7px; /* 减小字体 */
+    }
+    
+    .calendar-event-card .event-title {
+        font-size: 7px; /* 减小字体 */
+        max-height: 16px; /* 减小最大高度 */
+        line-height: 1.1;
+    }
+    
+    .calendar-event-card .event-venue,
+    .calendar-event-card .event-time {
+        font-size: 5px; /* 减小字体 */
+    }
+    
+    /* 超小屏幕隐藏截断指示器 */
+    .calendar-event-card.truncated::after {
+        display: none !important;
+    }
+    
+    .weekday {
+        padding: 6px 2px; /* 减小内边距 */
+        font-size: 11px; /* 减小字体 */
+    }
+    
+    .day-number {
+        font-size: 11px; /* 减小字体 */
+        margin-bottom: 2px;
+    }
+    
+    /* 超小屏幕弹出窗口优化 */
+    .modal-content {
+        padding: 15px !important; /* 进一步减小内边距 */
+        border-radius: 8px !important; /* 进一步减小圆角 */
+        width: 92% !important; /* 保持与屏幕的间距 */
+        max-width: calc(100vw - 16px) !important; /* 保持边距 */
+        margin: 8px !important; /* 保持边距 */
+        overflow-x: hidden !important; /* 防止水平滚动 */
+    }
+    
+    /* 超小屏幕弹出窗口内容优化 */
+    .event-detail-item {
+        flex-direction: row !important; /* 保持水平布局 */
+        gap: 8px !important;
+        padding: 6px !important;
+        align-items: center !important;
+    }
+    
+    .detail-label {
+        min-width: 50px !important; /* 减小标签最小宽度 */
+        font-size: 12px !important;
+        flex-shrink: 0 !important;
+    }
+    
+    .detail-value {
+        font-size: 12px !important;
+        white-space: nowrap !important; /* 防止换行 */
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        flex: 1 !important;
+    }
+    
+    .modal-header h3 {
+        font-size: 16px !important; /* 进一步减小标题字体 */
+        white-space: nowrap !important; /* 防止标题换行 */
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+    
+    .modal-event-image {
+        max-height: 150px; /* 进一步减小图片最大高度 */
+    }
+    
+    .close-btn {
+        width: 25px; /* 减小关闭按钮 */
+        height: 25px;
+        font-size: 20px;
+    }
+    
+    .container {
+        padding: 5px !important; /* 超小屏幕进一步减小内边距 */
+        overflow-x: hidden !important;
+        max-width: 100vw !important;
+    }
+    
+    body {
+        overflow-x: hidden !important;
+        max-width: 100vw !important;
     }
 }
 
