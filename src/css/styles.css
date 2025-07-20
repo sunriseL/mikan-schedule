@@ -1202,11 +1202,44 @@ body {
     border-left: 3px solid #FFD700;
 }
 
-.detail-icon {
-    font-size: 16px;
-    flex-shrink: 0;
-    margin-top: 2px;
-}
+    .detail-icon {
+        font-size: 16px;
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+    
+    /* 移动端图标和标签布局优化 */
+    @media (max-width: 768px) {
+        .detail-icon {
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        
+        .detail-label {
+            flex-shrink: 0;
+        }
+        
+        .detail-value {
+            flex: 1;
+            min-width: 0; /* 允许内容收缩 */
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .detail-icon {
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+        
+        .detail-label {
+            flex-shrink: 0;
+        }
+        
+        .detail-value {
+            flex: 1;
+            min-width: 0; /* 允许内容收缩 */
+        }
+    }
 
 .detail-label {
     font-weight: 600;
@@ -1583,28 +1616,30 @@ body {
         flex-direction: row !important; /* 保持水平布局 */
         gap: 10px !important;
         padding: 8px !important;
-        align-items: center !important; /* 垂直居中对齐 */
+        align-items: flex-start !important; /* 顶部对齐 */
+        flex-wrap: wrap !important; /* 允许换行 */
     }
     
     .detail-label {
         min-width: 60px !important; /* 保持标签最小宽度 */
         font-size: 14px !important;
         flex-shrink: 0 !important; /* 防止标签收缩 */
+        font-weight: 600 !important;
     }
     
     .detail-value {
         font-size: 14px !important;
-        white-space: nowrap !important; /* 防止换行 */
-        overflow: hidden !important;
-        text-overflow: ellipsis !important; /* 超出显示省略号 */
+        white-space: normal !important; /* 允许换行 */
+        overflow: visible !important;
+        word-wrap: break-word !important; /* 允许长单词换行 */
         flex: 1 !important;
     }
     
     .modal-header h3 {
         font-size: 18px !important; /* 减小标题字体 */
-        white-space: nowrap !important; /* 防止标题换行 */
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
+        white-space: normal !important; /* 允许标题换行 */
+        overflow: visible !important;
+        word-wrap: break-word !important; /* 允许长单词换行 */
     }
     
     .modal-event-image {
@@ -1707,28 +1742,30 @@ body {
         flex-direction: row !important; /* 保持水平布局 */
         gap: 8px !important;
         padding: 6px !important;
-        align-items: center !important;
+        align-items: flex-start !important; /* 顶部对齐 */
+        flex-wrap: wrap !important; /* 允许换行 */
     }
     
     .detail-label {
-        min-width: 50px !important; /* 减小标签最小宽度 */
+        min-width: 50px !important; /* 保持标签最小宽度 */
         font-size: 12px !important;
         flex-shrink: 0 !important;
+        font-weight: 600 !important;
     }
     
     .detail-value {
         font-size: 12px !important;
-        white-space: nowrap !important; /* 防止换行 */
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
+        white-space: normal !important; /* 允许换行 */
+        overflow: visible !important;
+        word-wrap: break-word !important; /* 允许长单词换行 */
         flex: 1 !important;
     }
     
     .modal-header h3 {
         font-size: 16px !important; /* 进一步减小标题字体 */
-        white-space: nowrap !important; /* 防止标题换行 */
-        overflow: hidden !important;
-        text-overflow: ellipsis !important;
+        white-space: normal !important; /* 允许标题换行 */
+        overflow: visible !important;
+        word-wrap: break-word !important; /* 允许长单词换行 */
     }
     
     .modal-event-image {
