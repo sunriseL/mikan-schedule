@@ -18,9 +18,9 @@ def check_and_install_dependencies():
                 importlib.import_module('bs4')
             else:
                 importlib.import_module(package)
-            print(f"✓ {package} 已安装")
+            print(f"[OK] {package} 已安装")
         except ImportError:
-            print(f"✗ {package} 未安装")
+            print(f"[MISS] {package} 未安装")
             missing_packages.append(package)
     
     if missing_packages:
@@ -35,7 +35,7 @@ def check_and_install_dependencies():
                 
                 print(f"正在安装 {package_name}...")
                 subprocess.check_call([sys.executable, '-m', 'pip', 'install', package_name])
-                print(f"✓ {package_name} 安装成功")
+                print(f"[OK] {package_name} 安装成功")
             
             print("\n所有依赖安装完成！")
             return True
@@ -59,7 +59,7 @@ def main():
         return
     
     print("\n" + "=" * 50)
-    print("开始运行爬虫...")
+    print("开始运行爬虫并直接更新网站数据...")
     print("=" * 50)
     
     try:
@@ -72,11 +72,10 @@ def main():
         print("\n" + "=" * 50)
         print("爬虫运行完成！")
         print("=" * 50)
-        print("生成的文件:")
-        print("- scraped_activities.json: 活动数据")
+        print("已更新文件:")
+        print("- assets/data/activities.json: 站点活动数据")
         print("- scraping_report.json: 统计报告")
-        print("- scraped_images/: 下载的图片")
-        print("\n如需更新网站数据，请将 scraped_activities.json 重命名为 activities.json")
+        print("- assets/images/: 下载的图片")
         
     except Exception as e:
         print(f"运行爬虫时出错: {e}")

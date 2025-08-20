@@ -24,7 +24,7 @@ class EventernoteScraper:
             'Upgrade-Insecure-Requests': '1',
         })
         self.all_events = []
-        self.image_dir = 'scraped_images'
+        self.image_dir = 'assets/images'
         
         # 创建图片目录
         if not os.path.exists(self.image_dir):
@@ -233,13 +233,13 @@ class EventernoteScraper:
         """下载图片并返回本地路径"""
         if not image_url:
             # 如果没有图片，使用默认图片
-            return "image/randpic_小日向美香_1.jpg"
+            return "assets/images/randpic_小日向美香_1.jpg"
         
         try:
             # 生成文件名
             safe_title = re.sub(r'[^\w\s-]', '', title)[:50]
             file_extension = os.path.splitext(urlparse(image_url).path)[1] or '.jpg'
-            filename = f"{safe_title}_{int(time.time())}{file_extension}"
+            filename = f"{safe_title}{file_extension}"
             filepath = os.path.join(self.image_dir, filename)
             
             # 下载图片
@@ -250,11 +250,11 @@ class EventernoteScraper:
                 f.write(response.content)
             
             print(f"下载图片: {filename}")
-            return filepath
+            return f"assets/images/{filename}"
             
         except Exception as e:
             print(f"下载图片失败: {e}")
-            return "image/randpic_小日向美香_1.jpg"
+            return "assets/images/randpic_小日向美香_1.jpg"
     
     def parse_date(self, date_text):
         """解析日期"""
@@ -424,7 +424,7 @@ class EventernoteScraper:
                 'name': "小日向美香",
                 'japaneseName': "こひなたみか",
                 'description': "声優、アイドル、アーティスト",
-                'image': "image/randpic_小日向美香_1.jpg"
+                'image': "assets/images/randpic_小日向美香_1.jpg"
             },
             'categories': [
                 {
@@ -441,10 +441,10 @@ class EventernoteScraper:
         }
         
         # 保存为JSON文件
-        with open('scraped_activities.json', 'w', encoding='utf-8') as f:
+        with open('assets/data/activities.json', 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=2)
         
-        print("数据已保存到 scraped_activities.json")
+        print("数据已保存到 assets/data/activities.json")
         
         # 生成统计报告
         self.generate_report()
